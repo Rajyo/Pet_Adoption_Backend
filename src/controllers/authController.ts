@@ -32,7 +32,6 @@ export const register = async(req: Request, res: Response, next: NextFunction) =
 
 //login function
 export const login = async(req: Request, res: Response, next: NextFunction) =>{
-    console.log(req);
     try{
         const user = await User.findOne({email:req.body.email});
         if(!user) throw new CustomError(404, "User not found!")

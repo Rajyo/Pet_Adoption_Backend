@@ -9,7 +9,7 @@ interface IDecode {
     exp: number
 };
 
-interface RequestWithUserRole extends Request {
+export interface RequestWithUserRole extends Request {
     user?: IDecode,
 }
 
@@ -33,7 +33,7 @@ export const verifyUser = (req: RequestWithUserRole, res: Response, next: NextFu
 
 
             req.user = decodedData;
-            console.log("verifyUser", req.user)
+            // console.log("verifyUser", req.user)
             if (req.user.id || req.user.isAdmin) {
                 next();
             } else {
