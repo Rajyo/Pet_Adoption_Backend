@@ -7,10 +7,11 @@ import { Request, Response, NextFunction } from "express"
 
 //register function
 export const register = async(req: Request, res: Response, next: NextFunction) =>{
+    // console.log(req.body);
     try{
         const user = await User.findOne({email:req.body.email});
 
-        if(user) throw new CustomError(404, "User already exists")
+        if(user) throw new CustomError(404, "User already exists, Please enter different Email")
 
         const salt = bcrypt.genSaltSync(10);
         const hash = bcrypt.hashSync(req.body.password, salt);
@@ -34,7 +35,7 @@ export const register = async(req: Request, res: Response, next: NextFunction) =
 export const login = async(req: Request, res: Response, next: NextFunction) =>{
     try{
         const user = await User.findOne({email:req.body.email});
-        if(!user) throw new CustomError(404, "User not found!")
+        if(!user) throw new CustomError(404, "Invalid Email")
 
         const isPasswordCorrect = await bcrypt.compare(
             req.body.password,
@@ -42,7 +43,7 @@ export const login = async(req: Request, res: Response, next: NextFunction) =>{
         );
 
 
-        if(!isPasswordCorrect) throw new CustomError(400, "Wrong password or username")
+        if(!isPasswordCorrect) throw new CustomError(400, "Invalid Password")
 
         const token = jwt.sign({id:user._id, isAdmin:user.isAdmin}, process.env.JWT_SECRET || 'string', { expiresIn: '1d' });
 
