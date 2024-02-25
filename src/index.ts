@@ -4,9 +4,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 dotenv.config();
 import authRoute  from './routes/authRoute'
-import { RequestWithUserRole, verifyUser } from "./utils/verifyToken";
-import { CustomError } from "./utils/custom-error.model";
-import User from "./models/User";
+import userRoute  from './routes/userRoute'
 
 
 const app: Express = express();
@@ -37,20 +35,21 @@ app.use(express.json({limit: "5mb"}))
 app.use(express.urlencoded({extended: true}))
 
 app.use("/api/auth", authRoute);
+app.use("/api/user", userRoute);
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Express + TypeScript Server');
 });
 
-app.get('/userInfo', verifyUser, async (req: RequestWithUserRole, res: Response) => {
-  try {
-    const user = await User.findById({_id: req?.user?.id}).select("-password")
-    res.status(200).send(user)
-  } catch (error) {
-    console.log(error);
-    throw new CustomError(404, "Token Invalid")
-  }
-});
+// app.get('/userInfo', verifyUser, async (req: RequestWithUserRole, res: Response) => {
+//   try {
+//     const user = await User.findById({_id: req?.user?.id}).select("-password")
+//     res.status(200).send(user)
+//   } catch (error) {
+//     console.log(error);
+//     throw new CustomError(404, "Token Invalid")
+//   }
+// });
 
 
 app.listen(port, () => {
