@@ -13,7 +13,7 @@ export const updateUser = async (req: RequestWithUserRole, res: Response) => {
             var hash = bcrypt.hashSync(req.body.password, salt);
             var updatedUser = await User.findByIdAndUpdate(req?.user?.id, { $set: { ...req.body, password: hash } }, { new: true }).select("-password")
         } else {
-            var updatedUser = await User.findByIdAndUpdate(req?.user?.id, { $set: {username: req.body.username} }, { new: true }).select("-password")
+            var updatedUser = await User.findByIdAndUpdate(req?.user?.id, { $set: {name: req.body.name} }, { new: true }).select("-password")
         }
         res.status(200).json(updatedUser);
 
