@@ -3,8 +3,9 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import cors from "cors";
 dotenv.config();
-import authRoute  from './routes/authRoute'
-import userRoute  from './routes/userRoute'
+import authRoute from './routes/authRoute'
+import userRoute from './routes/userRoute'
+import petProfileRoute from './routes/petProfileRoute'
 
 
 const app: Express = express();
@@ -36,6 +37,7 @@ app.use(express.urlencoded({extended: true}))
 
 app.use("/api/auth", authRoute);
 app.use("/api/user", userRoute);
+app.use("/api/petProfile", petProfileRoute);
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Express + TypeScript Server');
