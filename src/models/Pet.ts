@@ -42,6 +42,12 @@ const PetSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    likes: [{
+        type: mongoose.Types.ObjectId,
+        ref: "User",
+        unique: true,
+        required: false
+    }],
 
 }, { timestamps: true }
 );

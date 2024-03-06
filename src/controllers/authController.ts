@@ -45,11 +45,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
         const user = await User.findOne({ email: req.body.email });
         if (!user) throw new CustomError(404, "Invalid Email")
 
-        const isPasswordCorrect = await bcrypt.compare(
-            req.body.password,
-            user.password
-        );
-
+        const isPasswordCorrect = await bcrypt.compare(req.body.password, user.password as string);
 
         if (!isPasswordCorrect) throw new CustomError(400, "Invalid Password")
 
@@ -64,9 +60,9 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
 }
 
 
-//Just for reference
 //Logout is handled at client side
 //logout function
+//Just for reference
 export const logout = async (req: Request, res: Response, next: NextFunction) => {
     try {
         res
