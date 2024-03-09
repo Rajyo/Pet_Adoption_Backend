@@ -33,6 +33,11 @@ const UserSchema = new mongoose.Schema({
         ref: "PetAdoptionAppointment",
         required: false,
     }],
+    petLikedId: [{
+        type: mongoose.Schema.ObjectId,
+        ref: "Pet",
+        required: false,
+    }],
 
 }, { timestamps: true }
 );

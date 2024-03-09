@@ -2,6 +2,7 @@ import Pet from "../models/Pet";
 import { Request, Response } from "express"
 import { CustomError } from "../utils/custom-error.model";
 import { RequestWithUserRole } from "../utils/verifyToken";
+import User from "../models/User";
 
 
 //CREATE PetProfile
@@ -54,6 +55,8 @@ export const likePetProfile = async (req: RequestWithUserRole, res: Response) =>
                 petProfile?.likes?.map(async (item) => {
                     if (item._id == req?.user?.id) {
                         try {
+                            await User.findByIdAndUpdate(req?.user?.id, { $pull: { petLikedId: req.body.petProfileId } }, { new: true });
+
                             const unLikedPetProfiles = await Pet.findByIdAndUpdate(req.body.petProfileId, { $pull: { likes: req?.user?.id } }, { new: true });
                             res.status(200).json(unLikedPetProfiles);
                         } catch (err) {
@@ -61,6 +64,8 @@ export const likePetProfile = async (req: RequestWithUserRole, res: Response) =>
                         }
                     } else {
                         try {
+                            await User.findByIdAndUpdate(req?.user?.id, { $push: { petLikedId: req.body.petProfileId } }, { new: true });
+
                             const likedPetProfiles = await Pet.findByIdAndUpdate(req.body.petProfileId, { $push: { likes: req?.user?.id } }, { new: true });
                             res.status(200).json(likedPetProfiles);
                         } catch (err) {
@@ -70,6 +75,8 @@ export const likePetProfile = async (req: RequestWithUserRole, res: Response) =>
                 })
             } else {
                 try {
+                    await User.findByIdAndUpdate(req?.user?.id, { $push: { petLikedId: req.body.petProfileId } }, { new: true });
+                    
                     const likedPetProfiles = await Pet.findByIdAndUpdate(req.body.petProfileId, { $push: { likes: req?.user?.id } }, { new: true });
                     res.status(200).json(likedPetProfiles);
                 } catch (err) {
