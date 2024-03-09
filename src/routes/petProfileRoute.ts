@@ -11,7 +11,7 @@ router.post("/", verifyAdmin, createPetProfile);
 router.get("/find/:id", verifyUser, getPetProfile);
 
 //GET ALL
-router.get("/", verifyAdmin, getAllPetProfiles);
+router.get("/", verifyUser, getAllPetProfiles);
 
 //PUT LikePetProfile
 router.put("/like", verifyUser, likePetProfile);

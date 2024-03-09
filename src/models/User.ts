@@ -28,6 +28,11 @@ const UserSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    petAdoptionId: [{
+        type: mongoose.Schema.ObjectId,
+        ref: "PetAdoptionAppointment",
+        required: false,
+    }],
 
 }, { timestamps: true }
 );

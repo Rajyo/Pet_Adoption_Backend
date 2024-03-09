@@ -6,6 +6,7 @@ dotenv.config();
 import authRoute from './routes/authRoute'
 import userRoute from './routes/userRoute'
 import petProfileRoute from './routes/petProfileRoute'
+import petAdoptionAppointment from './routes/petAdoptionAppointment'
 
 
 const app: Express = express();
@@ -38,6 +39,7 @@ app.use(express.urlencoded({extended: true}))
 app.use("/api/auth", authRoute);
 app.use("/api/user", userRoute);
 app.use("/api/petProfile", petProfileRoute);
+app.use("/api/petAdoptionAppointment", petAdoptionAppointment);
 
 app.get('/', (req: Request, res: Response) => {
   res.send('Express + TypeScript Server');
