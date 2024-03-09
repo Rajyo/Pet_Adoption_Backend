@@ -36,7 +36,7 @@ export const deleteUser = async (req: RequestWithUserRole, res: Response) => {
 //GET User
 export const getUser = async (req: RequestWithUserRole, res: Response) => {
     try {
-        const user = await User.findById(req?.user?.id).select("-password").populate('petLikedId')
+        const user = await User.findById(req?.user?.id).select("-password").populate('petLikedId').populate('petAdoptionId')
         res.status(200).json(user);
 
     } catch (error) {
