@@ -45,16 +45,6 @@ app.get('/', (req: Request, res: Response) => {
   res.send('Express + TypeScript Server');
 });
 
-// app.get('/userInfo', verifyUser, async (req: RequestWithUserRole, res: Response) => {
-//   try {
-//     const user = await User.findById({_id: req?.user?.id}).select("-password")
-//     res.status(200).send(user)
-//   } catch (error) {
-//     console.log(error);
-//     throw new CustomError(404, "Token Invalid")
-//   }
-// });
-
 
 app.listen(port, () => {
   console.log(`[server]: Server is running at http://localhost:${port}`);

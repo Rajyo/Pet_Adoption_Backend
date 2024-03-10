@@ -49,7 +49,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
 
         if (!isPasswordCorrect) throw new CustomError(400, "Invalid Password")
 
-        const token = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, process.env.JWT_SECRET || 'string', { expiresIn: '1d' });
+        const token = jwt.sign({ id: user._id, isAdmin: user.isAdmin }, process.env.JWT_SECRET || 'string', { expiresIn: '15d' });
 
         // const {_id,...otherDetails} = user._doc;
         const _id = user._id
@@ -66,7 +66,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
 export const logout = async (req: Request, res: Response, next: NextFunction) => {
     try {
         res
-            .clearCookie("access_token")
+            .clearCookie("access_token") //Only if cookie is set
             .status(200)
             .json({ data: "Cookie Deleted" });
     } catch (error: any) {

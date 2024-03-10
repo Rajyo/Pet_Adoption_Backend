@@ -44,57 +44,27 @@ export const getAllPetProfiles = async (req: Request, res: Response) => {
 }
 
 
-//Like PetProfile
+
+// Like PetProfile
 export const likePetProfile = async (req: RequestWithUserRole, res: Response) => {
     try {
-        const petProfile = await Pet.findById(req.body.petProfileId).populate('likes')
-
-        if (petProfile?.likes != undefined) {
-            if (petProfile?.likes?.length > 0) {
-                //check if already liked
-                petProfile?.likes?.map(async (item) => {
-                    if (item._id == req?.user?.id) {
-                        try {
-                            await User.findByIdAndUpdate(req?.user?.id, { $pull: { petLikedId: req.body.petProfileId } }, { new: true });
-
-                            const unLikedPetProfiles = await Pet.findByIdAndUpdate(req.body.petProfileId, { $pull: { likes: req?.user?.id } }, { new: true });
-                            res.status(200).json(unLikedPetProfiles);
-                        } catch (err) {
-                            throw new CustomError(404, "Error while UnLiking PetProfile")
-                        }
-                    } else {
-                        try {
-                            await User.findByIdAndUpdate(req?.user?.id, { $push: { petLikedId: req.body.petProfileId } }, { new: true });
-
-                            const likedPetProfiles = await Pet.findByIdAndUpdate(req.body.petProfileId, { $push: { likes: req?.user?.id } }, { new: true });
-                            res.status(200).json(likedPetProfiles);
-                        } catch (err) {
-                            throw new CustomError(404, "Error while Liking PetProfile")
-                        }
-                    }
-                })
-            } else {
-                try {
-                    await User.findByIdAndUpdate(req?.user?.id, { $push: { petLikedId: req.body.petProfileId } }, { new: true });
-                    
-                    const likedPetProfiles = await Pet.findByIdAndUpdate(req.body.petProfileId, { $push: { likes: req?.user?.id } }, { new: true });
-                    res.status(200).json(likedPetProfiles);
-                } catch (err) {
-                    throw new CustomError(404, "Error while Liking PetProfile")
-                }
-            }
-        }
-    } catch (error) {
-        throw new CustomError(404, "Error while Liking/Unliking PetProfile")
+        await User.findByIdAndUpdate(req?.user?.id, { $push: { petLikedId: req.body.petProfileId } }, { new: true });
+        
+        const likedPetProfiles = await Pet.findByIdAndUpdate(req.body.petProfileId, { $push: { likes: req?.user?.id } }, { new: true });
+        res.status(200).json(likedPetProfiles);
+    } catch (err) {
+        throw new CustomError(404, "Error while Liking PetProfile")
     }
 }
 
-//UnLike PetProfile
-// export const unLikePetProfile = async (req: RequestWithUserRole, res: Response) => {
-//     try {
-//         const unLikedPetProfiles = await Pet.findByIdAndUpdate(req.body.petProfileId, { $pull: { likes: req?.user?.id } }, { new: true });
-//         res.status(200).json(unLikedPetProfiles);
-//     } catch (err) {
-//         throw new CustomError(404, "Error while UnLiking PetProfile")
-//     }
-// }
+// UnLike PetProfile
+export const unLikePetProfile = async (req: RequestWithUserRole, res: Response) => {
+    try {
+        await User.findByIdAndUpdate(req?.user?.id, { $pull: { petLikedId: req.body.petProfileId } }, { new: true });
+
+        const unLikedPetProfiles = await Pet.findByIdAndUpdate(req.body.petProfileId, { $pull: { likes: req?.user?.id } }, { new: true });
+        res.status(200).json(unLikedPetProfiles);
+    } catch (err) {
+        throw new CustomError(404, "Error while UnLiking PetProfile")
+    }
+}
